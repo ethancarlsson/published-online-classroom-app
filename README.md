@@ -6,5 +6,5 @@ This is an in progress app for creating online learning environments. The app ce
 For the moment it is still in production. If you would like to use the code to help you with your own app or build upon this app, do the following.
 
 1. create a new django app. 
-2. replace everything but the settings file with the code in this repository
-3. run the app
+2. replace everything but the settings file and your database with the code in this repository.
+3. run the app.
