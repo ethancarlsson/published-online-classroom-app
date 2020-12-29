@@ -1,0 +1,11 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+
+<form method="POST" actions="">
+    {% csrf_token %}
+    {{form}}
+
+    <input type="submit" name="Create User" value="Create Account">
+</form>
+
+{% endblock 'body' %}

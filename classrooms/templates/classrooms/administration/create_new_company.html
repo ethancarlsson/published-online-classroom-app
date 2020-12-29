@@ -1,0 +1,13 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+{% load crispy_forms_tags %}
+
+<a class="btn btn-primary" href="{% url 'manage-companies' %}">Back</a>
+
+<form method="POST" actions="{% url 'manage-companies' %}">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" name="Add Company" value="Add Company">
+</form>
+
+{% endblock 'body' %}

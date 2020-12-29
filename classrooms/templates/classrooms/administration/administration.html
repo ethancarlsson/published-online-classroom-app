@@ -1,0 +1,54 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+
+<div class="container">
+
+
+<div class="row" style="padding-top: 5%;">
+    <div class="col-md-4">
+        <div class="card body shadow text-center">
+            <p>
+                <a class="btn btn-primary btn-block" href="{% url 'create-new-class' %}"> Create a new Classroom </a>
+            </p>
+            <p>
+                <a class="btn btn-secondary btn-block" href="{% url 'manage-companies' %}"> Manage Companies </a>
+            </p>
+            <p>
+                <a class="btn btn-secondary btn-block" href="{% url 'manage-teachers' %}"> Manage Teachers </a>
+            </p>
+        </div>
+    </div>
+{% for room, weeks, weeks_finished, amount_of_students, capacity in dashboard_data %}
+<div class="col-md-4">
+    <div class="card body shadow">
+        <div style="padding: 4%;">
+        <form method="POST">
+        {% csrf_token %}
+        <h2> {{room}} </h2>
+        <div>
+            <a class="btn btn-primary" href="{% url 'edit-classroom' room.id %}">edit</a>
+            <button class="btn btn-danger" type="submit" name="Delete" value="{{room}}"> Delete</button>
+        </div>
+
+
+
+        {{weeks_finished}} out of {{weeks}} classes finished.
+        <p>
+            The teacher(s) for this room: 
+            {% for teacher in room.teacher.all %}
+                {{teacher}}
+            {% endfor %}
+        </p>
+        <h5>Students</h5>
+            <p>Classroom capacity: {{amount_of_students}}/{{capacity}}</p>
+            {% for student in room.students.all %}
+                <li>{{student}} </li>
+            {% endfor %}
+             </div>
+</div>        
+</div>
+
+        {% endfor %}
+    </div>
+</div>
+        {% endblock 'body' %}

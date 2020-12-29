@@ -1,0 +1,13 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+
+<form method="POST" actions="{% url 'login' %}">
+    {% csrf_token %}
+    {{form}}
+    {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% endif %}
+    <input type="submit" name="Log In" value="Sign In">
+</form>
+
+{% endblock 'body' %}

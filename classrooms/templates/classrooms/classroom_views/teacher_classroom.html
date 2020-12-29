@@ -1,0 +1,106 @@
+{% extends 'classrooms/classroom_views/classroom.html' %}
+{% load crispy_forms_tags %}
+
+{% block 'forms' %}
+
+<div class="container">
+    <a href="http://127.0.0.1:8000/classroom/{{classroom.id}}?page={{week_obj.week}}">See what the students see.</a>
+<div class="row">
+    <!-- upload description -->
+    <div class="col-sm">
+        <div class="card-body">
+            <h3>Write the description for each week</h3>
+            <form method="POST" >
+                <div class="form-group">
+                    {% csrf_token %}
+                    {{description_form | crispy }}
+                    <button class="btn btn-primary" type="submit" name="Description" value="{{week_obj.week}}">Post Description</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- upload files -->
+    <div class="col-sm"> 
+        <div class="card-body"> 
+            <h3>Upload Files</h3>
+            <form method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{form | crispy}}
+                <button class="btn btn-primary" type="submit" name="Week" value="{{week_obj.week}}">Upload File</button>
+            </form>
+        </div>
+
+    <!-- upload videos -->
+        <div class="card-body">
+            <h3>Link to Youtube videos</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{video_link_form | crispy}}
+                <button class="btn btn-primary" type="submit" name="Video_Link" value="{{week_obj.week}}">Post Video</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock 'forms' %}
+
+{% block 'description' %}
+
+{% for description in week_description %}
+<p>
+    <form method="POST">
+        {{ description | linebreaks }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" name="Delete description" value="{{description.id}}">Delete this description</button>
+    </form>
+</p>
+{% endfor %}
+
+{% endblock 'description' %}
+
+{% block 'video' %}
+
+<div>
+    {% for video in video_links %}
+    <form method="POST">
+        <iframe width="560"
+        height="315"
+        src="https://www.youtube.com/embed/{{video.video_link}}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+        
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" name="Delete video" value="{{video.id}}">Delete this video</button>
+    </form>
+    {% endfor %}
+</div>
+
+{% endblock 'video' %}
+
+{% block 'files' %}
+
+            {% for i in files_for_week %}
+                <p>
+                    <form method="POST">
+                        <a href="{{i.file_upload.url}}">{{i}}</a>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name="Delete" value="{{i.id}}">Delete</button>
+                    </form>
+                </p>
+            {% endfor %}
+        
+{% endblock %}
+
+{% block 'check_button' %}
+<form method="POST">
+    {% csrf_token %}
+    {% if week_obj.finished %}
+        <button type="submit" class="btn btn-primary btn-lg" name="Class_opened" value="{{week_obj}}">Open this class again</button>
+    {% else %}
+        <button type="submit" class="btn btn-secondary btn-lg" name="Class_finished" value="{{week_obj}}">We have finished this class</button>
+    {% endif %}
+    </form>
+{% endblock %}

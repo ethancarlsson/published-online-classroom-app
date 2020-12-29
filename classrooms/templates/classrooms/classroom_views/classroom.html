@@ -1,0 +1,131 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+
+
+<h1>{{classroom}}</h1>
+<div 
+id="Video-Conference" 
+class="collapse" >
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe
+        allow=""
+        src="https://meet.jit.si/{{classroom}}{{classroom_hash}}" allowfullscreen="true" 
+        class="rounded"
+        >
+        </iframe>
+    </div>
+</div>
+
+
+<div><a href="#Video-Conference" class="btn btn-secondary btn-lg btn-block" data-toggle="collapse">Toggle Video Conference</a>
+</div>
+
+{% if is_teacher %}
+    <a href="http://127.0.0.1:8000/teacher-classroom/{{classroom.id}}?page={{week_obj.week}}">Return to the teacher screen.</a>
+{% endif %}
+
+
+<div>
+
+    <div style="padding-top: 2%;" href="#content{{request.GET.page}}">
+        
+        {% if week_obj.finished %}
+            <button href="#content" type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="collapse">Class {{week_obj.week}} - finished - </button>
+        {% else %}
+            <button href="#content" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="collapse">Class {{week_obj.week}}</button>
+        {% endif %}
+    </div>
+    </div>
+    {% if week_obj.finished %}
+    <div id="content" class="collapse">
+    {% else %}
+    <div>
+    {% endif %}
+    <!-- The content for the week -->
+    <div id="content{{request.GET.page}}" class="shadow p-3 mb-5 bg-white rounded">
+        <!-- description -->
+        {% block 'description' %}
+        <div>
+            {% for description in week_description %}
+                {{ description | linebreaks }}
+            {% endfor %}
+        </div>
+        {% endblock %}
+
+        {% block 'video' %}
+        <div>
+            {% for video in video_links %}
+                <iframe width="560"
+                height="315"
+                src="https://www.youtube.com/embed/{{video.video_link}}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            {% endfor %}
+        </div>
+        {% endblock 'video' %}
+
+        {% block 'files' %}
+            {% for i in files_for_week %}
+                <a style='color: blue;'href="{{i}}">
+                    {{i}}
+                </a>
+            {% endfor %}
+        {% endblock %}
+
+        {% block 'check_button' %}
+        {% endblock %}
+
+        {% block 'forms' %}
+        {% endblock 'forms' %}
+
+        
+    </div>
+    </div>        
+    <div style="padding-top: 3%;" class="pagination">
+        <span class="step-links">
+            <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first </a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                {% if week_obj.week != 2 %}
+                    <li class="page-item"><a class="page-link" href="?page={{week_obj.week | add:-2}}">{{week_obj.week | add:-2}}</a></li>
+                {% endif %}
+
+                <li class="page-item"><a class="page-link" href="?page={{week_obj.week | add:-1}}">{{week_obj.week | add:-1}}</a></li>
+            {% endif %}
+                <li class="page-item active"><a class="page-link" href="?page={{week_obj.week}}">{{week_obj.week}}</a></li>
+    
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{week_obj.week | add:1}}">{{week_obj.week | add:1}}</a></li>
+                {% if not_too_high %}
+                    <li class="page-item"><a class="page-link" href="?page={{week_obj.week | add:2}}">{{week_obj.week | add:2}}</a></li>
+                {% endif %}
+
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                          </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% for week in ordered_weeks %}
+                            <a class="dropdown-item" href="?page={{week}}">{{week}}</a>
+                        {% endfor %}
+                            </div>
+                      </div>
+              </div>
+              
+            </ul>
+            
+            <span class="current">
+                Displaying class {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+        </span>
+    
+    </div>
+
+{% endblock 'body' %}

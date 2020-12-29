@@ -1,0 +1,14 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+{% load crispy_forms_tags %}
+
+<a href="{% url 'manage-teachers' %}">Back</a>
+
+<form method="POST" actions="{% url 'create-new-teacher' %}">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" name="Add teacher" value="Add teacher">
+</form>
+<p>{{feedback}}</p>
+
+{% endblock 'body' %}

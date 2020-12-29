@@ -1,0 +1,11 @@
+#app-navbar {
+    background: linear-gradient(120deg, #fcb617, #fc246f)
+}
+
+a {
+    color: inherit;
+}
+a:hover {
+    color: inherit;
+    text-decoration: inherit;
+}

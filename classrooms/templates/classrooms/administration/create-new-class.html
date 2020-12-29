@@ -1,0 +1,11 @@
+{% extends 'classrooms/administration/admin_pages.html' %}
+{% block 'admin-body' %}
+{% load crispy_forms_tags %}
+
+<form method="POST" actions="{% url 'create-new-class' %}">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" name="Create Classroom" value="Create Classroom">
+</form>
+
+{% endblock 'admin-body' %}

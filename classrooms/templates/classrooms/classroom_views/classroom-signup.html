@@ -1,0 +1,13 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+<a href="{% url 'home' %}">Back</a>
+
+<form method="POST" actions="">
+    {% csrf_token %}
+
+    <input type="submit" name="Sign up" value="Sign up">
+</form>
+
+
+
+{% endblock 'body' %}

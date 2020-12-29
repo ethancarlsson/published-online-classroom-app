@@ -1,0 +1,53 @@
+{% extends 'classrooms/base.html' %}
+{% block 'body' %}
+
+<div class="container">
+{% if is_teacher %}
+    <h1 class="display-3"> Your classrooms</h1>
+    <ul class="list-group list-group-flush">
+        {% for classroom in classroom_list %}
+            <li class="list-group-item">
+                <h4> {{classroom }}</h4>
+                <a href="{% url 'teacher-classroom' classroom.id %}">
+                    <button type="button" class="btn btn-outline-primary">Enter this classroom</button>
+                </a>
+                <p>class will be on {{classroom.class_days}} from {{classroom.start_time}} to {{classroom.end_time}}</p>
+            </li>
+        {% empty %}
+            <li class="list-group-item">You have no classes yet.</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h1 class="display-3"> Your classrooms</h1>
+    <ul class="list-group list-group-flush">
+        {% for classroom in classroom_list %}
+            <li class="list-group-item">
+                <h5>{{classroom }} </h5>
+                <a href="{% url 'classroom' classroom.id %}">
+                    <button type="button" class="btn btn-outline-primary">Enter this classroom</button>
+                </a>
+                <p>class will be on {{classroom.class_days}} from {{classroom.start_time}} to {{classroom.end_time}}</p>
+
+            </li>
+        {% empty %}
+            <li class="list-group-item">You haven't signed up to any classes yet.</li>
+            <p>class will be on {{classroom.class_days}} from {{classroom.start_time}} to {{classroom.end_time}}</p>
+
+            {% endfor %}
+    </ul>
+
+
+    <h1 class="display-3"> Classrooms you can sign up for </h1>
+
+    <ul>
+        {% for classroom in signup_list %}
+            <li>
+                <a href="{% url 'classroom-signup' classroom.id %}"> {{classroom}} </a>
+            </li>
+        {% empty %}
+            <li>There are no new classes to sign up to at this moment.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</div>
+{% endblock 'body' %}

@@ -1,0 +1,17 @@
+{% extends 'classrooms/administration/admin_pages.html' %}
+{% block 'admin-body' %}
+
+<form method="POST">
+    {% csrf_token %}
+    <ul class="list-group">
+        <li class="list-group-item">Companies <a class='btn btn-primary' href="{% url 'add-new-company' %}"> Add new company </a></li>
+        {% for company in all_companies %}
+        <li class="list-group-item">{{company}} 
+            <a class="btn btn-primary" href="{% url 'edit-company' company.id %}">edit</a>
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit" name="Delete" value="{{company}}">Delete</button>
+        </li>
+        {% endfor %}
+    </ul>
+</form>
+{% endblock 'admin-body' %}
